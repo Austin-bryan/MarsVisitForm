@@ -1,0 +1,308 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mars Visit Application</title>
+        
+        <!-- jQuery and jQuery UI CSS -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <!-- Stage 1: Personal Information -->
+            <div class="form-stage active" id="stage1">
+                <div class="form-header">
+                    <h1>Personal Information</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Personal Information Fields -->
+                    <label class="input-label" for="name">Full Name</label>
+                    <div class="name-fields">
+                        <input type="text" id="first-name" name="first-name" placeholder="First Name *" required>
+                        <input type="text" id="middle-name" name="middle-name" placeholder="Middle Name">
+                        <input type="text" id="last-name" name="last-name" placeholder="Last Name *" required>
+                    </div>
+                    <span id="name-error" class="error-label">Please enter a valid name.</span>
+
+                    <label class="input-label" for="dob">Date of Birth *</label>
+                    <input type="date" id="dob" name="dob" required>
+
+                    <label class="input-label" for="nationality">Nationality</label>
+                    <div class="input-group">
+                        <select id="nationality" name="nationality" required>
+                            <option value="US">United States</option>
+                            <option value="AU">Australia</option>
+                            <option value="CA">Canada</option>
+                            <option value="CN">China</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
+                            <option value="IN">India</option>
+                            <option value="IT">Italy</option>
+                            <option value="JP">Japan</option>
+                            <option value="MX">Mexico</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="RU">Russia</option>
+                            <option value="KR">South Korea</option>
+                            <option value="ES">Spain</option>
+                            <option value="SE">Sweden</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="UK">Other</option>
+                        </select>
+                    </div>
+
+                    <label class="input-label" for="email">Email *</label>
+                    <input type="email" id="email" name="email" placeholder="email@example.com" required>
+                    <span id="email-error" class="error-label"">Please enter a valid email address.</span>
+                    
+                    <label class="input-label" for="phone">Phone *</label>
+                    <input class="error" type="tel" id="phone" name="phone" placeholder="(555)-555-5555" maxlength="14" required>
+                    <span id="phone-error" class="error-label">Please enter a valid phone number.</span>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button1" class="nav-button" disabled>Back</button>
+                    <button id="next-button1" class="nav-button" onclick="showStage(2)" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Stage 2: Travel Preferences -->
+            <div class="form-stage" id="stage2" style="display: none;">
+                <div class="form-header">
+                    <h1>Travel Preferences</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Travel Preferences Fields -->
+                    <label class="input-label" for="departure">Departure Date *</label>
+                    <input type="date" id="departure" name="departure" required>
+
+                    <label class="input-label" for="return">Return Date *</label>
+                    <input type="date" id="return" name="return" required>
+
+                    <label class="input-label" for="accommodation">Accommodation Preference</label>
+                    <select id="accommodation" name="accommodation">
+                        <option value="none">No Preference</option>
+                        <option value="dome">Mars Habitat Dome</option>
+                        <option value="base">Martian Base</option>
+                        <option value="igloo">Martian Ice Igloo</option>
+                        <option value="station">Orbital Station Stay</option>
+                        <option value="rover">Rover Cabin Experience</option>
+                        <option value="hotel">Space Hotel</option>
+                    </select>
+
+                    <label class="input-label" for="requests">Special Requests or Preferences</label>
+                    <textarea id="requests" name="requests"></textarea>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button2" class="nav-button" onclick="showStage(1)">Back</button>
+                    <button id="next-button2" class="nav-button" onclick="showStage(3)" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Stage 3: Health and Safety -->
+            <div class="form-stage" id="stage3" style="display: none;">
+                <div class="form-header">
+                    <h1>Health and Safety</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Health and Safety Fields -->
+                    <label class="input-label" for="health">Health Declaration:</label>
+                    <input type="checkbox" id="health" name="health" required> Yes
+
+                    <label class="input-label" for="emergency">Emergency Contact Information:</label>
+                    <input type="text" id="emergency" name="emergency" required>
+
+                    <label class="input-label" for="conditions">Any Medical Conditions:</label>
+                    <textarea id="conditions" name="conditions"></textarea>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button3" class="nav-button" onclick="showStage(2)">Back</button>
+                    <button id="next-button3" class="nav-button">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery and jQuery UI Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+        <!-- Custom Scripts -->
+        <script src="script.js"></script>
+        <script type="text/javascript">
+            document.getElementById('email').addEventListener('input', function() {
+                const emailField = this;
+                const emailError = document.getElementById('email-error');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|gov|edu)$/;
+
+                if (!emailRegex.test(emailField.value)) {
+                    emailField.classList.add('error-border');
+                    emailError.style.display = 'block';
+                } else {
+                    emailField.classList.remove('error-border');
+                    emailError.style.display = 'none';
+                }
+            });
+        </script>
+        <script type="text/javascript">
+            document.getElementById('phone').addEventListener('input', function() {
+                const phoneField = this;
+                const phoneError = document.getElementById('phone-error');
+
+                if (phoneField.value.length < 14) {
+                    phoneField.classList.add('error-border');
+                    phoneError.style.display = 'block';
+                } else {
+                    phoneField.classList.remove('error-border');
+                    phoneError.style.display = 'none';
+                }
+            })
+        </script>
+        <script type="text/javascript">
+            function validateName(name) {
+                if (name.length == 0)
+                    return true;
+                // Trim and check length
+                if (name.length < 2 || name.length > 50)
+                    return false;
+                
+                // Regex for allowed characters (alphabetic, hyphens, apostrophes)
+                const nameRegex = /^[a-zA-Zà-ÿÀ-ß'-]+$/;
+                if (!nameRegex.test(name)) 
+                    return false;
+                
+                // Check for no consecutive special characters
+                if (/--|''/.test(name)) 
+                    return false;
+                
+                // Trim spaces and disallow multiple spaces
+                if (name.trim() !== name || name.includes("  ")) 
+                    return false;
+                
+                return true; // Name is valid
+            }
+            function updateName(e) { 
+                const firstName = document.getElementById('first-name');
+                const middleName = document.getElementById('middle-name');
+                const lastName = document.getElementById('last-name');
+                const nameError = document.getElementById('name-error');
+
+                const isFirstNameValid = validateName(firstName.value);
+                const isMiddleNameValid = validateName(middleName.value);
+                const isLastNameValid = validateName(lastName.value);
+
+                // Update the error state for each field
+                updateFieldErrorState(firstName, isFirstNameValid);
+                updateFieldErrorState(middleName, isMiddleNameValid);
+                updateFieldErrorState(lastName, isLastNameValid);
+
+                // Only hide the error message if all names are valid
+                if (isFirstNameValid && isMiddleNameValid && isLastNameValid) {
+                    nameError.style.display = 'none';
+                } else {
+                    nameError.style.display = 'block';
+                }
+
+                function updateFieldErrorState(field, isValid) {
+                    if (isValid) {
+                        field.classList.remove('error-border');
+                    } else {
+                        field.classList.add('error-border');
+                    }
+                }
+            }
+
+            document.getElementById('first-name').addEventListener('input', updateName);
+            document.getElementById('middle-name').addEventListener('input', updateName);
+            document.getElementById('last-name').addEventListener('input', updateName);
+        </script>
+        <script type="text/javascript">
+            document.getElementById('phone').addEventListener('input', function (e) {
+                let input = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+                let formatted = '';
+
+                if (input.length > 0) {
+                    formatted += '(' + input.substring(0, 3); // Add opening parenthesis and first 3 digits
+                }
+                if (input.length >= 4) {
+                    formatted += ')-' + input.substring(3, 6); // Add closing parenthesis and dash, next 3 digits
+                }
+                if (input.length >= 7) {
+                    formatted += '-' + input.substring(6, 10); // Add dash and last 4 digits
+                }
+                
+                e.target.value = formatted; // Update the input field with the formatted value
+            });
+        </script>
+
+        <script type="text/javascript">
+            // Function to validate all required fields in the active stage
+            function validateActiveStage() {
+                const activeStage = document.querySelector('.form-stage.active');
+                let isValid = true;
+
+                // Find all required fields in the active stage
+                const requiredFields = activeStage.querySelectorAll('[required]');
+
+                requiredFields.forEach(field => {
+                    if (field.value.trim().length === 0 || field.classList.contains('error-border')) {
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+            // Update the 'Next' button based on validation
+            function updateNextButtonState(stageNumber) {
+                const nextButton = document.getElementById(`next-button${stageNumber}`);
+
+                if (validateActiveStage() && nextButton) {
+                    nextButton.classList.remove('disabled');
+                    nextButton.disabled = false;
+                } else if (nextButton) {
+                    nextButton.classList.add('disabled');
+                    nextButton.disabled = true;
+                }
+            }
+
+            // Add event listeners to form fields in the active stage on page load
+            function addFieldListeners(stageNumber) {
+                const activeStage = document.querySelector('.form-stage.active');
+                const fields = activeStage.querySelectorAll('[required]');
+
+                fields.forEach(field => {
+                    field.addEventListener('input', () => {
+                        updateNextButtonState(stageNumber);
+                    });
+                    field.addEventListener('blur', () => {
+                        updateNextButtonState(stageNumber);
+                    });
+                });
+            }
+
+            // Function to switch between stages
+            function showStage(stageNumber) {
+                const stages = document.querySelectorAll('.form-stage');
+
+                stages.forEach((stage, index) => {
+                    if (index + 1 === stageNumber) {
+                        stage.classList.add('active');
+                        stage.style.display = 'block';
+                    } else {
+                        stage.classList.remove('active');
+                        stage.style.display = 'none';
+                    }
+                });
+
+                addFieldListeners(stageNumber); // Add listeners for the new active stage
+                updateNextButtonState(stageNumber); // Update the button state for the new active stage
+            }
+
+
+            // Ensure listeners are added when a stage becomes active
+            document.addEventListener('DOMContentLoaded', addFieldListeners);
+            document.addEventListener('DOMContentLoaded', () => showStage(1));
+        </script>
+    </body>
+    </html>
