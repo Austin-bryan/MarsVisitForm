@@ -19,12 +19,13 @@
                 </div>
                 <div class="form-body">
                     <!-- Personal Information Fields -->
-                    <label class="input-label" for="name">Full Name</label>
-                    <div class="name-fields">
-                        <input type="text" id="first-name" name="first-name" placeholder="First Name *" required>
-                        <input type="text" id="middle-name" name="middle-name" placeholder="Middle Name">
-                        <input type="text" id="last-name" name="last-name" placeholder="Last Name *" required>
-                    </div>
+                    <label id="client-name" class="input-label" for="name">Full Name</label>
+<!--                     <div name="name-input">
+                        <div class="name-fields">
+                            <input type="text" id="first-name" name="first-name" placeholder="First Name *" required>
+                            <input type="text" id="last-name" name="last-name" placeholder="Last Name *" required>
+                        </div>
+                    </div> -->
                     <span id="name-error" class="error-label">Please enter a valid name.</span>
 
                     <label class="input-label" for="dob">Date of Birth *</label>
@@ -108,11 +109,14 @@
                 </div>
                 <div class="form-body">
                     <!-- Health and Safety Fields -->
-                    <label class="input-label" for="health">Health Declaration:</label>
-                    <input type="checkbox" id="health" name="health" required> Yes
+                    <label class="input-label" for="health">Health Declaration</label>
+                    <select id="health" name="health" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
 
-                    <label class="input-label" for="emergency">Emergency Contact Information:</label>
-                    <input type="text" id="emergency" name="emergency" required>
+                    <label id="emergency-label" class="input-label" for="emergency">Emergency Contact Information</label>
 
                     <label class="input-label" for="conditions">Any Medical Conditions:</label>
                     <textarea id="conditions" name="conditions"></textarea>
@@ -129,7 +133,12 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
         <!-- Custom Scripts -->
-        <script src="script.js"></script>
+        <script src="phone.js"></script>
+        <script src="name.js"></script>
+        <script type="text/javascript">
+            addName("client-name");
+            addName("emergency-label");
+        </script>
         <script type="text/javascript">
             document.getElementById('email').addEventListener('input', function() {
                 const emailField = this;
@@ -160,64 +169,6 @@
             })
         </script>
         <script type="text/javascript">
-            function validateName(name) {
-                if (name.length == 0)
-                    return true;
-                // Trim and check length
-                if (name.length < 2 || name.length > 50)
-                    return false;
-                
-                // Regex for allowed characters (alphabetic, hyphens, apostrophes)
-                const nameRegex = /^[a-zA-Zà-ÿÀ-ß'-]+$/;
-                if (!nameRegex.test(name)) 
-                    return false;
-                
-                // Check for no consecutive special characters
-                if (/--|''/.test(name)) 
-                    return false;
-                
-                // Trim spaces and disallow multiple spaces
-                if (name.trim() !== name || name.includes("  ")) 
-                    return false;
-                
-                return true; // Name is valid
-            }
-            function updateName(e) { 
-                const firstName = document.getElementById('first-name');
-                const middleName = document.getElementById('middle-name');
-                const lastName = document.getElementById('last-name');
-                const nameError = document.getElementById('name-error');
-
-                const isFirstNameValid = validateName(firstName.value);
-                const isMiddleNameValid = validateName(middleName.value);
-                const isLastNameValid = validateName(lastName.value);
-
-                // Update the error state for each field
-                updateFieldErrorState(firstName, isFirstNameValid);
-                updateFieldErrorState(middleName, isMiddleNameValid);
-                updateFieldErrorState(lastName, isLastNameValid);
-
-                // Only hide the error message if all names are valid
-                if (isFirstNameValid && isMiddleNameValid && isLastNameValid) {
-                    nameError.style.display = 'none';
-                } else {
-                    nameError.style.display = 'block';
-                }
-
-                function updateFieldErrorState(field, isValid) {
-                    if (isValid) {
-                        field.classList.remove('error-border');
-                    } else {
-                        field.classList.add('error-border');
-                    }
-                }
-            }
-
-            document.getElementById('first-name').addEventListener('input', updateName);
-            document.getElementById('middle-name').addEventListener('input', updateName);
-            document.getElementById('last-name').addEventListener('input', updateName);
-        </script>
-        <script type="text/javascript">
             document.getElementById('phone').addEventListener('input', function (e) {
                 let input = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
                 let formatted = '';
@@ -232,7 +183,7 @@
                     formatted += '-' + input.substring(6, 10); // Add dash and last 4 digits
                 }
                 
-                e.target.value = formatted; // Update the input field with the formatted value
+                e.target.value = formatted;
             });
         </script>
 
