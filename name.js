@@ -1,17 +1,17 @@
 function createNameManager() {
     let idCounter = 0; 
 
-    return function(beforeElementId) {
-        const beforeElement = document.getElementById(beforeElementId);
-        const id = ++idCounter; // Increment the counter
+    return function(adjacentHTMLId, insertPosition, margin) {
+        const adjacentHTML = document.getElementById(adjacentHTMLId);
+        const id = ++idCounter; 
         const template = `
             <div id="name-fields${id}" class="name-fields">
-                <input type="text" id="first-name${id}" name="first-name${id}" placeholder="First Name *" required>
-                <input type="text" id="last-name${id}" name="last-name${id}" placeholder="Last Name *" required>
+                <input type="text" id="first-name${id}" name="first-name${id}" style="margin-top: ${margin}px" placeholder="First Name *" required>
+                <input type="text" id="last-name${id}" name="last-name${id}" style="margin-top: ${margin}px" placeholder="Last Name *" required>
             </div>
             <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
         `;
-        beforeElement.insertAdjacentHTML('afterend', template);
+        adjacentHTML.insertAdjacentHTML(insertPosition, template);
         attachValidationEvents(`first-name${id}`, `last-name${id}`, `name-error${id}`);
     };
 }

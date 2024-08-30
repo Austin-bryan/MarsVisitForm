@@ -112,6 +112,11 @@
                     </select>
 
                     <label id="emergency-label" class="input-label" for="emergency">Emergency Contact Information</label>
+                    <div id="contact-1" class="contact">
+                        Primary Contact *
+                    </div>
+                    <div id="contact-container"></div>
+                    <button id="secondary-button" class="secondary-button">Add Secondary Contact</button>
 
                     <label class="input-label" for="conditions">Any Medical Conditions</label>
                     <textarea id="conditions" name="conditions"></textarea>
@@ -136,22 +141,25 @@
                     <button class="nav-button" onclick="window.location.href='index.html'">Return to Home</button>
                 </div>
             </div>
+        </div>
 
-            <!-- jQuery and jQuery UI Scripts -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-            
-            <!-- Custom Scripts -->
-            <script src="fieldValidation.js"></script>
-            <script src="phone.js"></script>
-            <script src="name.js"></script>
+        <!-- jQuery and jQuery UI Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        
+        <!-- Custom Scripts -->
+        <script src="main.js"></script>
+        <script src="fieldValidation.js"></script>
+        <script src="phone.js"></script>
+        <script src="name.js"></script>
             
         <!-- Setup contact input fields -->
         <script type="text/javascript">
-            addName("client-name");
-            addName("emergency-label");
-            addPhone("client-phone-label", 0);
-            addPhone("name-fields2", 15);   
+            addName("client-name", 'afterend');
+            addPhone("client-phone-label", 'afterend', 0);
+
+            addName("contact-1", 'beforeend', 10);
+            addPhone("name-fields2", 'afterend', 10);   
         </script>
 
         <!-- Validate email -->
@@ -213,25 +221,29 @@
 
             // Function to switch between stages
             function showStage(stageNumber) {
-                const stages = document.querySelectorAll('.form-stage');
 
-                stages.forEach((stage, index) => {
-                    if (index + 1 === stageNumber) {
-                        stage.classList.add('active');
-                        stage.style.display = 'block';
-                    } else {
-                        stage.classList.remove('active');
-                        stage.style.display = 'none';
-                    }
-                });
-
-                addFieldListeners(stageNumber); // Add listeners for the new active stage
-                updateNextButtonState(stageNumber); // Update the button state for the new active stage
+                // Adds a short 0.1 delay for buttons to finish their animation, to improve visual feedback of user response
+                setTimeout(() => {
+                    const stages = document.querySelectorAll('.form-stage');
+                    
+                    stages.forEach((stage, index) => {
+                        if (index + 1 === stageNumber) {
+                            stage.classList.add('active');
+                            stage.style.display = 'block';
+                        } else {
+                            stage.classList.remove('active');
+                            stage.style.display = 'none';
+                        }
+                    });
+                    
+                    addFieldListeners(stageNumber); // Add listeners for the new active stage
+                    updateNextButtonState(stageNumber); // Update the button state for the new active stage
+                }, BUTTON_DELAY);
             }
 
             // Ensure listeners are added when a stage becomes active
             document.addEventListener('DOMContentLoaded', addFieldListeners);
-            document.addEventListener('DOMContentLoaded', () => showStage(1));
+            document.addEventListener('DOMContentLoaded', () => showStage(3));
         </script>
 
         <!-- Validate date of birth -->
@@ -280,6 +292,51 @@
 
             document.getElementById('departure').addEventListener('input', validateDates);
             document.getElementById('return').addEventListener('input', validateDates);
+        </script>
+
+        <!-- Handles event for secondary contact button -->
+        <script type="text/javascript">
+            document.getElementById('secondary-button').addEventListener('click', function() {
+                const addButton = this;
+                const contactContainer = document.getElementById('contact-container');
+            
+                console.log("hello");
+
+                // Step 1: Fade out the button
+                addButton.classList.add('fade-out');
+            
+                setTimeout(() => {
+                    // Step 2: Remove the button from the DOM after fading out
+                    addButton.style.display = 'none';
+            
+                    // Step 3: Create new fields for the second contact
+                    const newContact = document.createElement('div');
+                    newContact.className = 'contact-section fade-in';
+            
+                    newContact.innerHTML = `
+                        <div class="contact-header">Contact 2</div>
+                        <div class="contact-body">
+                            <!-- Example fields for Contact 2 -->
+                            <label for="second-contact-name">Name:</label>
+                            <input type="text" id="second-contact-name" name="second-contact-name" required>
+            
+                            <label for="second-contact-phone">Phone:</label>
+                            <input type="tel" id="second-contact-phone" name="second-contact-phone" required>
+                        </div>
+                    `;
+            
+                    // Step 4: Append the new fields to the contact container
+                    contactContainer.appendChild(newContact);
+            
+                    // Step 5: Trigger fade-in effect
+                    setTimeout(() => {
+                        newContact.classList.add('show');
+                    }, 10); // Small delay to allow the element to be in the DOM before applying opacity
+            
+                    // Step 6: Adjust the form size smoothly
+                    contactContainer.style.maxHeight = contactContainer.scrollHeight + "px";
+                }, 300); // Match the timeout to the button's fade-out duration
+            });
         </script>
     </body>
     </html>

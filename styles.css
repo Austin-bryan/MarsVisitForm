@@ -91,6 +91,11 @@ body {
     background-color: #0056b3;
 }
 
+.nav-button:active {
+    background-color: #002252; 
+    transform: scale(0.95); 
+}
+
 .nav-button:disabled {
     background-color: #b0b0b0;  
     color: #ffffff;
@@ -202,7 +207,7 @@ textarea {
 }
 
 /* ==============================
-   Custom Class Styles (Optional)
+   Custom Class Styles
    ============================== */
    
 .name-fields {
@@ -212,4 +217,72 @@ textarea {
 
 .input-group {
     flex: 1;
+}
+
+/* ==============================
+   Contact Styles
+   ============================== */
+
+.contact {
+    background-color: #525252; 
+    color: #ffffff; 
+    padding: 5px 10px; 
+    border-radius: 12px;
+    font-weight: bold; 
+    font-size: 0.9em; 
+    padding: 10px;
+}
+
+.contact-body {
+    margin-top: 25px; 
+}
+
+.secondary-button {
+    background-color: #333;
+    border-radius: 12px;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: white;
+    margin-top: 10px;
+    transition: transform 0.1s ease, background-color 0.3s ease;
+}
+
+.secondary-button:hover {
+    background-color: #4a4a4a;
+}
+
+.secondary-button:active {
+    background-color: #222; 
+    transform: scale(0.95); 
+}
+
+/* Fade-out effect for the button */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Prevent clicking while fading */
+}
+
+/* Fade-in effect for new contact fields */
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+}
+
+/* Smoothly expand the form */
+#contact-container {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    max-height: 1000px; /* Adjust as necessary */
+    overflow: hidden;
+}
+
+.contact-section {
+    margin-top: 20px;
 }
