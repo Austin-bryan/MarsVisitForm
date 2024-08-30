@@ -1,21 +1,12 @@
-function createPhoneManager() {
-    let idCounter = 0; 
+const addPhone = createFieldManager(
+    (id, margin) => `
+        <input class="error" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555 *" maxlength="14" required>
+        <span id="phone-error${id}" class="error-label">Please enter a valid phone number.</span>
+    `, attachPhoneValidationEvents);
 
-    return function(adjacentHTMLId, insertPosition, margin) {
-        const adjacentHTML = document.getElementById(adjacentHTMLId);
-        const id = ++idCounter; 
-        const template = `
-            <input class="error" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555 *" maxlength="14" required>
-            <span id="phone-error${id}" class="error-label">Please enter a valid phone number.</span>
-        `;
-        adjacentHTML.insertAdjacentHTML(insertPosition, template);
-        attachPhoneValidationEvents(`phone${id}`, `phone-error${id}`);
-    };
-}
-
-const addPhone = createPhoneManager();
-
-function attachPhoneValidationEvents(phoneId, errorId) {
+function attachPhoneValidationEvents(id) {
+    const phoneId = `phone${id}`;
+    const errorId = `phone-error${id}`;
     const phoneField = document.getElementById(phoneId);
     
     function validateNumber() {

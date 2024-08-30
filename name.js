@@ -1,24 +1,18 @@
-function createNameManager() {
-    let idCounter = 0; 
+const addName = createFieldManager(
+    (id, margin) => `
+        <div id="name-fields${id}" class="name-fields">
+            <input type="text" id="first-name${id}" name="first-name${id}" style="margin-top: ${margin}px" placeholder="First Name *" required>
+            <input type="text" id="last-name${id}" name="last-name${id}" style="margin-top: ${margin}px" placeholder="Last Name *" required>
+        </div>
+        <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
+    `, attachNameValidationEvents
+)
 
-    return function(adjacentHTMLId, insertPosition, margin) {
-        const adjacentHTML = document.getElementById(adjacentHTMLId);
-        const id = ++idCounter; 
-        const template = `
-            <div id="name-fields${id}" class="name-fields">
-                <input type="text" id="first-name${id}" name="first-name${id}" style="margin-top: ${margin}px" placeholder="First Name *" required>
-                <input type="text" id="last-name${id}" name="last-name${id}" style="margin-top: ${margin}px" placeholder="Last Name *" required>
-            </div>
-            <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
-        `;
-        adjacentHTML.insertAdjacentHTML(insertPosition, template);
-        attachValidationEvents(`first-name${id}`, `last-name${id}`, `name-error${id}`);
-    };
-}
+function attachNameValidationEvents(id) {
+    const firstNameId = `first-name${id}`;
+    const lastNameId = `last-name${id}`;
+    const errorId = `name-error${id}`;
 
-const addName = createNameManager();
-
-function attachValidationEvents(firstNameId, lastNameId, errorId) {
     const firstName = document.getElementById(firstNameId);
     const lastName = document.getElementById(lastNameId);
 
