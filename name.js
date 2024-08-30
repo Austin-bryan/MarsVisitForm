@@ -1,23 +1,24 @@
-function createNameTemplate(id) {
-    console.log(`first-name${id}`);
-    return `
-        <div class="name-fields">
-            <input type="text" id="first-name${id}" name="first-name" placeholder="First Name *" required>
-            <input type="text" id="last-name${id}" name="last-name" placeholder="Last Name *" required>
-        </div>
-        <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
-    `;
-}
-
 let idCounter = 0;
 
-function addName(beforeElementId) {
-    const contactContainer = document.getElementById(beforeElementId);
-    const template = createNameTemplate(++idCounter);
-    contactContainer.insertAdjacentHTML('afterend', template);
+function createNameManager() {
+    let idCounter = 0; 
 
-    attachValidationEvents(`first-name${idCounter}`, `last-name${idCounter}`, `name-error${idCounter}`);
+    return function(beforeElementId) {
+        const beforeElement = document.getElementById(beforeElementId);
+        const id = ++idCounter; // Increment the counter
+        const template = `
+            <div id="name-fields${id}" class="name-fields">
+                <input type="text" id="first-name${id}" name="first-name${id}" placeholder="First Name *" required>
+                <input type="text" id="last-name${id}" name="last-name${id}" placeholder="Last Name *" required>
+            </div>
+            <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
+        `;
+        beforeElement.insertAdjacentHTML('afterend', template);
+        attachValidationEvents(`first-name${id}`, `last-name${id}`, `name-error${id}`);
+    };
 }
+
+const addName = createNameManager();
 
 function attachValidationEvents(firstNameId, lastNameId, errorId) {
     const firstName = document.getElementById(firstNameId);

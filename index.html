@@ -20,16 +20,11 @@
                 <div class="form-body">
                     <!-- Personal Information Fields -->
                     <label id="client-name" class="input-label" for="name">Full Name</label>
-<!--                     <div name="name-input">
-                        <div class="name-fields">
-                            <input type="text" id="first-name" name="first-name" placeholder="First Name *" required>
-                            <input type="text" id="last-name" name="last-name" placeholder="Last Name *" required>
-                        </div>
-                    </div> -->
                     <span id="name-error" class="error-label">Please enter a valid name.</span>
 
                     <label class="input-label" for="dob">Date of Birth *</label>
                     <input type="date" id="dob" name="dob" required>
+                    <span id="dob-error" class="error-label"">Please enter a date of birth.</span>
 
                     <label class="input-label" for="nationality">Nationality</label>
                     <div class="input-group">
@@ -59,9 +54,7 @@
                     <input type="email" id="email" name="email" placeholder="email@example.com" required>
                     <span id="email-error" class="error-label"">Please enter a valid email address.</span>
                     
-                    <label class="input-label" for="phone">Phone *</label>
-                    <input class="error" type="tel" id="phone" name="phone" placeholder="(555)-555-5555" maxlength="14" required>
-                    <span id="phone-error" class="error-label">Please enter a valid phone number.</span>
+                    <label id="client-phone-label" class="input-label" for="phone">Phone *</label>
                 </div>
                 <div class="form-footer">
                     <button id="back-button1" class="nav-button" disabled>Back</button>
@@ -78,9 +71,11 @@
                     <!-- Travel Preferences Fields -->
                     <label class="input-label" for="departure">Departure Date *</label>
                     <input type="date" id="departure" name="departure" required>
+                    <span id="departure-error" class="error-label"">Please enter a depature date.</span>
 
                     <label class="input-label" for="return">Return Date *</label>
                     <input type="date" id="return" name="return" required>
+                    <span id="return-error" class="error-label"">Return date must be at least 2 weeks after the depature date.</span>
 
                     <label class="input-label" for="accommodation">Accommodation Preference</label>
                     <select id="accommodation" name="accommodation">
@@ -118,7 +113,7 @@
 
                     <label id="emergency-label" class="input-label" for="emergency">Emergency Contact Information</label>
 
-                    <label class="input-label" for="conditions">Any Medical Conditions:</label>
+                    <label class="input-label" for="conditions">Any Medical Conditions</label>
                     <textarea id="conditions" name="conditions"></textarea>
                 </div>
                 <div class="form-footer">
@@ -138,6 +133,8 @@
         <script type="text/javascript">
             addName("client-name");
             addName("emergency-label");
+            addPhone("client-phone-label", 0);
+            addPhone("name-fields2", 15);   
         </script>
         <script type="text/javascript">
             document.getElementById('email').addEventListener('input', function() {
@@ -154,39 +151,6 @@
                 }
             });
         </script>
-        <script type="text/javascript">
-            document.getElementById('phone').addEventListener('input', function() {
-                const phoneField = this;
-                const phoneError = document.getElementById('phone-error');
-
-                if (phoneField.value.length < 14) {
-                    phoneField.classList.add('error-border');
-                    phoneError.style.display = 'block';
-                } else {
-                    phoneField.classList.remove('error-border');
-                    phoneError.style.display = 'none';
-                }
-            })
-        </script>
-        <script type="text/javascript">
-            document.getElementById('phone').addEventListener('input', function (e) {
-                let input = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
-                let formatted = '';
-
-                if (input.length > 0) {
-                    formatted += '(' + input.substring(0, 3); // Add opening parenthesis and first 3 digits
-                }
-                if (input.length >= 4) {
-                    formatted += ')-' + input.substring(3, 6); // Add closing parenthesis and dash, next 3 digits
-                }
-                if (input.length >= 7) {
-                    formatted += '-' + input.substring(6, 10); // Add dash and last 4 digits
-                }
-                
-                e.target.value = formatted;
-            });
-        </script>
-
         <script type="text/javascript">
             // Function to validate all required fields in the active stage
             function validateActiveStage() {
@@ -254,6 +218,99 @@
             // Ensure listeners are added when a stage becomes active
             document.addEventListener('DOMContentLoaded', addFieldListeners);
             document.addEventListener('DOMContentLoaded', () => showStage(1));
+        </script>
+        <script type="text/javascript">
+            function validateDOB(dobFieldId) {
+                const dobField = document.getElementById(dobFieldId);
+                const dobError = document.getElementById('dob-error');
+                const dobValue = new Date(dobField.value);
+                const today = new Date();
+                const maxDate = new Date();
+                maxDate.setFullYear(today.getFullYear() - 150);
+
+                if (dobValue > today || dobValue < maxDate) {
+                    dobField.classList.add('error-border');
+                    dobError.style.display = 'block';
+                    return false;
+                } else {
+                    dobField.classList.remove('error-border');
+                    dobError.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // Attach the validation function to the DOB field's blur event
+            document.getElementById('dob').addEventListener('input', function() {
+                validateDOB('dob');
+            });
+        </script>
+        <script type="text/javascript">
+            function validateDates() {
+                const departureField = document.getElementById('departure');
+                const returnField = document.getElementById('return');
+                const departureError = document.getElementById('departure-error');
+                const returnError = document.getElementById('return-error');
+
+                const today = new Date();
+                const departureDate = new Date(departureField.value);
+                const returnDate = new Date(returnField.value);
+                const twoWeeksLater = new Date(departureDate);
+                const oneYearLater = new Date(departureDate);
+                const maxFutureDate = new Date(today);
+                maxFutureDate.setFullYear(today.getFullYear() + 5); // Maximum of 5 years in the future
+
+                twoWeeksLater.setDate(departureDate.getDate() + 14);
+                oneYearLater.setFullYear(departureDate.getFullYear() + 1);
+
+                let isValid = true;
+
+                // Clear previous error messages
+                departureError.textContent = '';
+                returnError.textContent = '';
+
+                // Validate departure date
+                if (departureDate < today) {
+                    departureError.textContent = "Departure date can't be in the past.";
+                    isValid = false;
+                } else if (departureDate > maxFutureDate) {
+                    departureError.textContent = `Departure date can't be more than 5 years from today.`;
+                    isValid = false;
+                }
+
+                // Validate return date
+                if (returnDate < twoWeeksLater) {
+                    returnError.textContent = "Return date must be at least 14 days after the departure date.";
+                    isValid = false;
+                } else if (returnDate > oneYearLater) {
+                    returnError.textContent = "Return date can't be more than 1 year after the departure date.";
+                    isValid = false;
+                }
+
+                // Add or remove error-border class based on validation
+                if (departureError.textContent) {
+                    departureField.classList.add('error-border');
+                    departureError.style.display = 'block';
+                    console.log("A");
+                } else {
+                    departureField.classList.remove('error-border');
+                    departureError.style.display = 'none';
+                    console.log("B");
+                }
+
+                if (returnError.textContent) {
+                    returnField.classList.add('error-border');
+                    returnError.style.display = 'block';
+                } else {
+                    returnField.classList.remove('error-border');
+                    returnError.style.display = 'none';
+                }
+
+                return isValid;
+            }
+
+            // Attach the validation function to the departure and return fields' blur event
+            document.getElementById('departure').addEventListener('input', validateDates);
+            document.getElementById('return').addEventListener('input', validateDates);
         </script>
     </body>
     </html>
