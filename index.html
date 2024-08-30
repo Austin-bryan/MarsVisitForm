@@ -269,11 +269,24 @@
 
         <!-- Validate departure and return dates -->
         <script type="text/javascript">
+            function validateDateField(fieldId, errorId, condition, errorMessage) {
+                const field = document.getElementById(fieldId);
+                const error = document.getElementById(errorId);
+                if (condition) {
+                    field.classList.add('error-border');
+                    error.textContent = errorMessage;
+                    error.style.display = 'block';
+                    return false;
+                } else {
+                    field.classList.remove('error-border');
+                    error.style.display = 'none';
+                    return true;
+                }
+            }
+
             function validateDates() {
                 const departureField = document.getElementById('departure');
                 const returnField = document.getElementById('return');
-                const departureError = document.getElementById('departure-error');
-                const returnError = document.getElementById('return-error');
 
                 const today = new Date();
                 const departureDate = new Date(departureField.value);
@@ -281,51 +294,17 @@
                 const twoWeeksLater = new Date(departureDate);
                 const oneYearLater = new Date(departureDate);
                 const maxFutureDate = new Date(today);
-                maxFutureDate.setFullYear(today.getFullYear() + 5); // Maximum of 5 years in the future
 
+                maxFutureDate.setFullYear(today.getFullYear() + 5);
                 twoWeeksLater.setDate(departureDate.getDate() + 14);
                 oneYearLater.setFullYear(departureDate.getFullYear() + 1);
 
                 let isValid = true;
 
-                // Clear previous error messages
-                departureError.textContent = '';
-                returnError.textContent = '';
-
-                // Validate departure date
-                if (departureDate < today) {
-                    departureError.textContent = "Departure date can't be in the past.";
-                    isValid = false;
-                } else if (departureDate > maxFutureDate) {
-                    departureError.textContent = `Departure date can't be more than 5 years from today.`;
-                    isValid = false;
-                }
-
-                // Validate return date
-                if (returnDate < twoWeeksLater) {
-                    returnError.textContent = "Return date must be at least 14 days after the departure date.";
-                    isValid = false;
-                } else if (returnDate > oneYearLater) {
-                    returnError.textContent = "Return date can't be more than 1 year after the departure date.";
-                    isValid = false;
-                }
-
-                // Add or remove error-border class based on validation
-                if (departureError.textContent) {
-                    departureField.classList.add('error-border');
-                    departureError.style.display = 'block';
-                } else {
-                    departureField.classList.remove('error-border');
-                    departureError.style.display = 'none';
-                }
-
-                if (returnError.textContent) {
-                    returnField.classList.add('error-border');
-                    returnError.style.display = 'block';
-                } else {
-                    returnField.classList.remove('error-border');
-                    returnError.style.display = 'none';
-                }
+                isValid &&= validateDateField('departure', 'departure-error', departureDate < today, "Departure date can't be in the past.");
+                isValid &&= validateDateField('departure', 'departure-error', departureDate > maxFutureDate, `Departure date can't be more than 5 years from today.`);
+                isValid &&= validateDateField('return', 'return-error', returnDate < twoWeeksLater, "Return date must be at least 14 days after the departure date.");
+                isValid &&= validateDateField('return', 'return-error', returnDate > oneYearLater, "Return date can't be more than 1 year after the departure date.");
 
                 return isValid;
             }
