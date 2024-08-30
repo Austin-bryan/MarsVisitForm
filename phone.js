@@ -7,7 +7,7 @@ function createPhoneManager() {
         const beforElement = document.getElementById(beforeElementId);
         const id = ++idCounter; // Increment the counter
         const template = `
-            <input class="error" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555" maxlength="14" required>
+            <input class="error" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555 *" maxlength="14" required>
             <span id="phone-error${id}" class="error-label">Please enter a valid phone number.</span>
         `;
         beforElement.insertAdjacentHTML('afterend', template);

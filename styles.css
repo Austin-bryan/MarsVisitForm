@@ -59,7 +59,7 @@ body {
     color: #ffffff;
     border: none;
     padding: 10px 20px;
-    border-radius: 50px;
+    border-radius: 12px; /* Updated to match the other elements */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -73,6 +73,7 @@ body {
     color: #ffffff;
     cursor: not-allowed; 
     border: none; 
+    border-radius: 12px; /* Updated to match the other elements */
 }
 
 .input-label {
@@ -90,7 +91,7 @@ textarea {
     border: none;
     color: #fff; /* White text */
     padding: 10px; /* Add padding for better spacing */
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 12px; /* Updated to match the other elements */
     width: 100%; /* Full width input */
     box-sizing: border-box; /* Ensure padding doesn’t break the layout */
 }
@@ -125,7 +126,7 @@ input[type="text"] {
     background-color: #333;
     color: #fff;
     border: 1px solid #444;
-    border-radius: 4px;
+    border-radius: 12px; /* Updated to match the other elements */
     box-sizing: border-box;
 }
 
@@ -139,7 +140,7 @@ select {
     background-color: #333;
     color: #fff;
     border: 1px solid #444;
-    border-radius: 4px;
+    border-radius: 12px; /* Updated to match the other elements */
     box-sizing: border-box;
 }
 
@@ -150,6 +151,7 @@ select option {
 
 .error-border {
     border: 2px solid red !important;
+    border-radius: 12px; /* Updated to match the other elements */
 }
 
 .error-label {
@@ -176,4 +178,5 @@ select:-webkit-autofill:focus {
 textarea {
     resize: vertical; /* Allow only vertical resizing */
     max-width: 100%; /* Prevent it from stretching beyond the container */
+    border-radius: 12px; /* Updated to match the other elements */
 }

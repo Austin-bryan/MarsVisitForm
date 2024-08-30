@@ -118,10 +118,24 @@
                 </div>
                 <div class="form-footer">
                     <button id="back-button3" class="nav-button" onclick="showStage(2)">Back</button>
-                    <button id="next-button3" class="nav-button">Submit</button>
+                    <button id="next-button3" class="nav-button" onclick="showStage(4)">Submit</button>
                 </div>
             </div>
-        </div>
+
+            <!-- Stage 4: Submission -->
+            <div class="form-stage" id="stage4" style="display: none;">
+                <div class="form-header">
+                    <h1>Application Submitted</h1>
+                </div>
+                <div class="form-body">
+                    <p>Thank you for submitting your application to visit Mars!</p>
+                    <p>We have received your information and will review it shortly. You will receive a confirmation email with further details.</p>
+                    <p>We look forward to seeing you on your journey to the Red Planet!</p>
+                </div>
+                <div class="form-footer">
+                    <button class="nav-button" onclick="window.location.href='index.html'">Return to Home</button>
+                </div>
+            </div>
 
         <!-- jQuery and jQuery UI Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -290,11 +304,9 @@
                 if (departureError.textContent) {
                     departureField.classList.add('error-border');
                     departureError.style.display = 'block';
-                    console.log("A");
                 } else {
                     departureField.classList.remove('error-border');
                     departureError.style.display = 'none';
-                    console.log("B");
                 }
 
                 if (returnError.textContent) {
