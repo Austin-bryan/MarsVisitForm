@@ -137,14 +137,15 @@
                 </div>
             </div>
 
-        <!-- jQuery and jQuery UI Scripts -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-        <!-- Custom Scripts -->
-        <script src="phone.js"></script>
-        <script src="name.js"></script>
-
+            <!-- jQuery and jQuery UI Scripts -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+            
+            <!-- Custom Scripts -->
+            <script src="fieldValidation.js"></script>
+            <script src="phone.js"></script>
+            <script src="name.js"></script>
+            
         <!-- Setup contact input fields -->
         <script type="text/javascript">
             addName("client-name");
@@ -155,18 +156,11 @@
 
         <!-- Validate email -->
         <script type="text/javascript">
-            document.getElementById('email').addEventListener('input', function() {
-                const emailField = this;
-                const emailError = document.getElementById('email-error');
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|gov|edu)$/;
+            const emailField = document.getElementById('email');
 
-                if (!emailRegex.test(emailField.value)) {
-                    emailField.classList.add('error-border');
-                    emailError.style.display = 'block';
-                } else {
-                    emailField.classList.remove('error-border');
-                    emailError.style.display = 'none';
-                }
+            emailField.addEventListener('input', function() {
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|gov|edu)$/;
+                validateField('email', 'email-error', !emailRegex.test(emailField.value), "Please enter a valid email.");
             });
         </script>
 
@@ -188,6 +182,7 @@
 
                 return isValid;
             }
+            
             // Update the 'Next' button based on validation
             function updateNextButtonState(stageNumber) {
                 const nextButton = document.getElementById(`next-button${stageNumber}`);
@@ -234,7 +229,6 @@
                 updateNextButtonState(stageNumber); // Update the button state for the new active stage
             }
 
-
             // Ensure listeners are added when a stage becomes active
             document.addEventListener('DOMContentLoaded', addFieldListeners);
             document.addEventListener('DOMContentLoaded', () => showStage(1));
@@ -242,48 +236,24 @@
 
         <!-- Validate date of birth -->
         <script type="text/javascript">
-            function validateDOB(dobFieldId) {
-                const dobField = document.getElementById(dobFieldId);
-                const dobError = document.getElementById('dob-error');
-                const dobValue = new Date(dobField.value);
+            function validateDOB() {
+                const dobValue = new Date(document.getElementById('dob').value);
                 const today = new Date();
-                const maxDate = new Date();
-                maxDate.setFullYear(today.getFullYear() - 150);
+                const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                const maxDate = new Date(today.getFullYear() - 150, today.getMonth(), today.getDate());
 
-                if (dobValue > today || dobValue < maxDate) {
-                    dobField.classList.add('error-border');
-                    dobError.style.display = 'block';
-                    return false;
-                } else {
-                    dobField.classList.remove('error-border');
-                    dobError.style.display = 'none';
-                    return true;
-                }
+                if (!validateField('dob', 'dob-error', dobValue > today, "Please enter a valid age."))
+                    return;
+                if (!validateField('dob', 'dob-error', dobValue < maxDate, "Birth year must be within 150 years from today."))
+                    return;
+                validateField('dob', 'dob-error', dobValue > minDate, "You must be 18 years old or older.");
             }
 
-            // Attach the validation function to the DOB field's blur event
-            document.getElementById('dob').addEventListener('input', function() {
-                validateDOB('dob');
-            });
+            document.getElementById('dob').addEventListener('input', validateDOB);
         </script>
 
         <!-- Validate departure and return dates -->
         <script type="text/javascript">
-            function validateDateField(fieldId, errorId, condition, errorMessage) {
-                const field = document.getElementById(fieldId);
-                const error = document.getElementById(errorId);
-                if (condition) {
-                    field.classList.add('error-border');
-                    error.textContent = errorMessage;
-                    error.style.display = 'block';
-                    return false;
-                } else {
-                    field.classList.remove('error-border');
-                    error.style.display = 'none';
-                    return true;
-                }
-            }
-
             function validateDates() {
                 const departureField = document.getElementById('departure');
                 const returnField = document.getElementById('return');
@@ -299,14 +269,13 @@
                 twoWeeksLater.setDate(departureDate.getDate() + 14);
                 oneYearLater.setFullYear(departureDate.getFullYear() + 1);
 
-                let isValid = true;
-
-                isValid &&= validateDateField('departure', 'departure-error', departureDate < today, "Departure date can't be in the past.");
-                isValid &&= validateDateField('departure', 'departure-error', departureDate > maxFutureDate, `Departure date can't be more than 5 years from today.`);
-                isValid &&= validateDateField('return', 'return-error', returnDate < twoWeeksLater, "Return date must be at least 14 days after the departure date.");
-                isValid &&= validateDateField('return', 'return-error', returnDate > oneYearLater, "Return date can't be more than 1 year after the departure date.");
-
-                return isValid;
+                if (!validateField('departure', 'departure-error', departureDate < today, "Departure date can't be in the past.")) 
+                    return;
+                if (!validateField('departure', 'departure-error', departureDate > maxFutureDate, `Departure date can't be more than 5 years from today.`)) 
+                    return;
+                if (!validateField('return', 'return-error', returnDate < twoWeeksLater, "Return date must be at least 14 days after the departure date.")) 
+                    return;
+                validateField('return', 'return-error', returnDate > oneYearLater, "Return date can't be more than 1 year after the departure date.");
             }
 
             document.getElementById('departure').addEventListener('input', validateDates);

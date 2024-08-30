@@ -1,5 +1,3 @@
-                    
-
 function createPhoneManager() {
     let idCounter = 0; 
 
@@ -19,16 +17,9 @@ const addPhone = createPhoneManager();
 
 function attachPhoneValidationEvents(phoneId, errorId) {
     const phoneField = document.getElementById(phoneId);
-    const phoneError = document.getElementById(errorId);
-
+    
     function validateNumber() {
-        if (phoneField.value.length < 14) {
-            phoneField.classList.add('error-border');
-            phoneError.style.display = 'block';
-        } else {
-            phoneField.classList.remove('error-border');
-            phoneError.style.display = 'none';
-        }
+        validateField(phoneId, errorId, phoneField.value.length != 14, "Please enter a valid phone number.");
     };
     
     function formateNumber(e) {
