@@ -51,7 +51,7 @@
                     </div>
 
                     <label class="input-label" for="email">Email *</label>
-                    <input type="email" id="email" name="email" placeholder="email@example.com" required>
+                    <input type="email" id="email" name="email" placeholder="email@example.com *" required>
                     <span id="email-error" class="error-label"">Please enter a valid email address.</span>
                     
                     <label id="client-phone-label" class="input-label" for="phone">Phone *</label>
@@ -144,12 +144,16 @@
         <!-- Custom Scripts -->
         <script src="phone.js"></script>
         <script src="name.js"></script>
+
+        <!-- Setup contact input fields -->
         <script type="text/javascript">
             addName("client-name");
             addName("emergency-label");
             addPhone("client-phone-label", 0);
             addPhone("name-fields2", 15);   
         </script>
+
+        <!-- Validate email -->
         <script type="text/javascript">
             document.getElementById('email').addEventListener('input', function() {
                 const emailField = this;
@@ -165,6 +169,8 @@
                 }
             });
         </script>
+
+        <!-- Handles stage switching, ensuring valid fields -->
         <script type="text/javascript">
             // Function to validate all required fields in the active stage
             function validateActiveStage() {
@@ -204,7 +210,7 @@
                     field.addEventListener('input', () => {
                         updateNextButtonState(stageNumber);
                     });
-                    field.addEventListener('blur', () => {
+                    field.addEventListener('change', () => {
                         updateNextButtonState(stageNumber);
                     });
                 });
@@ -233,6 +239,8 @@
             document.addEventListener('DOMContentLoaded', addFieldListeners);
             document.addEventListener('DOMContentLoaded', () => showStage(1));
         </script>
+
+        <!-- Validate date of birth -->
         <script type="text/javascript">
             function validateDOB(dobFieldId) {
                 const dobField = document.getElementById(dobFieldId);
@@ -258,6 +266,8 @@
                 validateDOB('dob');
             });
         </script>
+
+        <!-- Validate departure and return dates -->
         <script type="text/javascript">
             function validateDates() {
                 const departureField = document.getElementById('departure');
@@ -320,7 +330,6 @@
                 return isValid;
             }
 
-            // Attach the validation function to the departure and return fields' blur event
             document.getElementById('departure').addEventListener('input', validateDates);
             document.getElementById('return').addEventListener('input', validateDates);
         </script>
