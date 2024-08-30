@@ -1,4 +1,7 @@
-/* General Styles */
+/* ==============================
+   Global Styles
+   ============================== */
+   
 body {
     margin: 0;
     padding: 0;
@@ -11,6 +14,10 @@ body {
     height: 100vh;
 }
 
+/* ==============================
+   App Container
+   ============================== */
+   
 .app-container {
     display: flex;
     justify-content: center;
@@ -19,6 +26,10 @@ body {
     height: 100%;
 }
 
+/* ==============================
+   Form Stage Styling
+   ============================== */
+   
 .form-stage {
     background-color: #1e1e1e;
     border-radius: 12px;
@@ -26,13 +37,17 @@ body {
     width: 80%;
     max-width: 500px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    display: none; /* This hides the stage */
+    display: none; /* Hides the stage by default */
 }
 
 .form-stage.active {
-    display: block; /* This ensures the active stage is shown */
+    display: block; /* Displays the active stage */
 }
 
+/* ==============================
+   Form Header
+   ============================== */
+   
 .form-header {
     background-color: #2c2c2c;
     border-radius: 12px;
@@ -45,6 +60,10 @@ body {
     font-size: 1.5em;
 }
 
+/* ==============================
+   Form Body and Footer
+   ============================== */
+   
 .form-body {
     margin: 20px 0;
 }
@@ -54,12 +73,16 @@ body {
     justify-content: space-between;
 }
 
+/* ==============================
+   Navigation Buttons
+   ============================== */
+   
 .nav-button {
     background-color: #007bff;
     color: #ffffff;
     border: none;
     padding: 10px 20px;
-    border-radius: 12px; /* Updated to match the other elements */
+    border-radius: 12px; /* Consistent with other elements */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -73,15 +96,21 @@ body {
     color: #ffffff;
     cursor: not-allowed; 
     border: none; 
-    border-radius: 12px; /* Updated to match the other elements */
+    border-radius: 12px; /* Consistent with other elements */
 }
 
+/* ==============================
+   Input and Label Styling
+   ============================== */
+   
 .input-label {
     display: block;
     margin-top: 10px; 
+    color: #fff;
+    margin-bottom: 5px;
 }
 
-/* Input and textarea styling */
+/* Input Fields */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -90,10 +119,10 @@ textarea {
     background-color: #333; /* Dark background */
     border: none;
     color: #fff; /* White text */
-    padding: 10px; /* Add padding for better spacing */
-    border-radius: 12px; /* Updated to match the other elements */
+    padding: 10px; /* Padding for better spacing */
+    border-radius: 12px; /* Consistent with other elements */
     width: 100%; /* Full width input */
-    box-sizing: border-box; /* Ensure padding doesn’t break the layout */
+    box-sizing: border-box; /* Ensures padding doesn’t break the layout */
 }
 
 input[type="text"]:focus,
@@ -105,42 +134,21 @@ textarea:focus {
     box-shadow: 0 0 5px #007bff; 
 }
 
-.name-fields {
-    display: flex;
-    gap: 20px; 
-}
-
-.input-group {
-    flex: 1;
-}
-
-.input-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #fff;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 12px; /* Updated to match the other elements */
-    box-sizing: border-box;
-}
-
 input[type="text"]::placeholder {
     color: #888; /* Placeholder color */
 }
 
+/* ==============================
+   Select Dropdowns
+   ============================== */
+   
 select {
     width: 100%;
     padding: 10px;
     background-color: #333;
     color: #fff;
     border: 1px solid #444;
-    border-radius: 12px; /* Updated to match the other elements */
+    border-radius: 12px; /* Consistent with other elements */
     box-sizing: border-box;
 }
 
@@ -149,9 +157,13 @@ select option {
     color: #fff;
 }
 
+/* ==============================
+   Error Styling
+   ============================== */
+   
 .error-border {
     border: 2px solid red !important;
-    border-radius: 12px; /* Updated to match the other elements */
+    border-radius: 12px; /* Consistent with other elements */
 }
 
 .error-label {
@@ -160,6 +172,10 @@ select option {
     display: none; 
 }
 
+/* ==============================
+   Autofill Styling Fix
+   ============================== */
+   
 /* Prevents the browser from changing the style of the fields when using autocomplete */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -175,8 +191,25 @@ select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
 }
 
+/* ==============================
+   Textarea Specific Styling
+   ============================== */
+   
 textarea {
     resize: vertical; /* Allow only vertical resizing */
     max-width: 100%; /* Prevent it from stretching beyond the container */
-    border-radius: 12px; /* Updated to match the other elements */
+    border-radius: 12px; /* Consistent with other elements */
+}
+
+/* ==============================
+   Custom Class Styles (Optional)
+   ============================== */
+   
+.name-fields {
+    display: flex;
+    gap: 20px; 
+}
+
+.input-group {
+    flex: 1;
 }

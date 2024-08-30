@@ -21,8 +21,7 @@ function attachPhoneValidationEvents(phoneId, errorId) {
     const phoneField = document.getElementById(phoneId);
     const phoneError = document.getElementById(errorId);
 
-    phoneField.addEventListener('input', function () {
-        // Phone number validation logic
+    function validateNumber() {
         if (phoneField.value.length < 14) {
             phoneField.classList.add('error-border');
             phoneError.style.display = 'block';
@@ -30,9 +29,9 @@ function attachPhoneValidationEvents(phoneId, errorId) {
             phoneField.classList.remove('error-border');
             phoneError.style.display = 'none';
         }
-    });
-
-    phoneField.addEventListener('input', function (e) {
+    };
+    
+    function formateNumber(e) {
         let input = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
         let formatted = '';
 
@@ -47,5 +46,10 @@ function attachPhoneValidationEvents(phoneId, errorId) {
         }
 
         e.target.value = formatted;
-    });
+    }
+
+    phoneField.addEventListener('input', validateNumber);
+    phoneField.addEventListener('input', formateNumber);
+    phoneField.addEventListener('change', validateNumber);
+    phoneField.addEventListener('change', formateNumber);
 }
