@@ -19,12 +19,12 @@
                 </div>
                 <div class="form-body">
                     <!-- Personal Information Fields -->
-                    <label id="client-name" class="input-label" for="name">Full Name</label>
+                    <label id="client-name-label" class="input-label" for="name1">Full Name</label>
                     <span id="name-error" class="error-label">Please enter a valid name.</span>
 
                     <label class="input-label" for="dob">Date of Birth *</label>
                     <input type="date" id="dob" name="dob" required>
-                    <span id="dob-error" class="error-label"">Please enter a date of birth.</span>
+                    <span id="dob-error" class="error-label">Please enter a date of birth.</span>
 
                     <label class="input-label" for="nationality">Nationality</label>
                     <div class="input-group">
@@ -50,11 +50,10 @@
                         </select>
                     </div>
 
-                    <label class="input-label" for="email">Email *</label>
-                    <input type="email" id="email" name="email" placeholder="email@example.com *" required>
-                    <span id="email-error" class="error-label"">Please enter a valid email address.</span>
-                    
-                    <label id="client-phone-label" class="input-label" for="phone">Phone *</label>
+                    <label id="client-email-label" class="input-label" for="email1">Email *</label>
+                    <!-- <input type="email" id="email" name="email" placeholder="email@example.com *" required>
+                    <span id="email-error" class="error-label">Please enter a valid email address.</span> -->
+                    <label id="client-phone-label" class="input-label" for="phone1">Phone *</label>
                 </div>
                 <div class="form-footer">
                     <button id="back-button1" class="nav-button" disabled>Back</button>
@@ -153,19 +152,10 @@
             
         <!-- Setup contact input fields -->
         <script type="text/javascript">
-            addName("client-name", 'afterend', 0, true);
+            addName("client-name-label", 'afterend', 0, true);
             addPhone("client-phone-label", 'afterend', 0, true);
+            addEmail("client-email-label", 'afterend', 0, true);
             addContact("emergency-label", 'beforeend', 0, true);
-        </script>
-
-        <!-- Validate email -->
-        <script type="text/javascript">
-            const emailField = document.getElementById('email');
-
-            emailField.addEventListener('input', function() {
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|gov|edu)$/;
-                validateField('email', 'email-error', !emailRegex.test(emailField.value), "Please enter a valid email.");
-            });
         </script>
 
         <!-- Handles stage switching, ensuring valid fields -->
