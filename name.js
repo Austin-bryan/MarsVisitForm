@@ -1,8 +1,8 @@
 const addName = createFieldManager(
-    (id, margin) => `
+    (id, margin, isRequired) => `
         <div id="name-fields${id}" class="name-fields">
-            <input type="text" id="first-name${id}" name="first-name${id}" style="margin-top: ${margin}px" placeholder="First Name *" required>
-            <input type="text" id="last-name${id}" name="last-name${id}" style="margin-top: ${margin}px" placeholder="Last Name *" required>
+            <input type="text" id="first-name${id}" name="first-name${id}" style="margin-top: ${margin}px" placeholder="First Name${isRequired ? ' *' : ''}"${isRequired ? ' required' : ''}>
+            <input type="text" id="last-name${id}" name="last-name${id}" style="margin-top: ${margin}px" placeholder="Last Name${isRequired ? ' *' : ''}"${isRequired ? ' required' : ''}>
         </div>
         <span id="name-error${id}" class="error-label">Please enter a valid name.</span>
     `, attachNameValidationEvents

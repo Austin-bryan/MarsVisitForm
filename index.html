@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div class="app-container">
+        <div class="app-container outer-panel">
             <!-- Stage 1: Personal Information -->
             <div class="form-stage active" id="stage1">
                 <div class="form-header">
@@ -104,7 +104,7 @@
                 </div>
                 <div class="form-body">
                     <!-- Health and Safety Fields -->
-                    <label class="input-label" for="health">Health Declaration</label>
+                    <label class="input-label" for="health">Health Declaration *</label>
                     <select id="health" name="health" required>
                         <option value="" disabled selected>Select an option</option>
                         <option value="yes">Yes</option>
@@ -112,10 +112,6 @@
                     </select>
 
                     <label id="emergency-label" class="input-label" for="emergency">Emergency Contact Information</label>
-                    <div id="contact-1" class="contact">
-                        Primary Contact *
-                    </div>
-                    <div id="contact-container"></div>
                     <button id="secondary-button" class="secondary-button">Add Secondary Contact</button>
 
                     <label class="input-label" for="conditions">Any Medical Conditions</label>
@@ -123,7 +119,7 @@
                 </div>
                 <div class="form-footer">
                     <button id="back-button3" class="nav-button" onclick="showStage(2)">Back</button>
-                    <button id="next-button3" class="nav-button" onclick="showStage(4)">Submit</button>
+                    <button id="next-button3" class="nav-button" onclick="showStage(4)" disabled>Submit</button>
                 </div>
             </div>
 
@@ -153,14 +149,13 @@
         <script src="createField.js"></script>
         <script src="phone.js"></script>
         <script src="name.js"></script>
+        <script src="contact.js"></script>
             
         <!-- Setup contact input fields -->
         <script type="text/javascript">
-            addName("client-name", 'afterend');
-            addPhone("client-phone-label", 'afterend', 0);
-
-            addName("contact-1", 'beforeend', 10);
-            addPhone("name-fields2", 'afterend', 10);   
+            addName("client-name", 'afterend', 0, true);
+            addPhone("client-phone-label", 'afterend', 0, true);
+            addContact("emergency-label", 'beforeend', 0, true);
         </script>
 
         <!-- Validate email -->
@@ -184,7 +179,11 @@
                 const requiredFields = activeStage.querySelectorAll('[required]');
 
                 requiredFields.forEach(field => {
-                    if (field.value.trim().length === 0 || field.classList.contains('error-border')) {
+                    if (!field.value) {
+                        isValid = false;
+                        console.log(field.id);
+                    }
+                    else if (field.value.trim().length === 0 || field.classList.contains('error-border')) {
                         isValid = false;
                     }
                 });
@@ -210,6 +209,8 @@
                 const activeStage = document.querySelector('.form-stage.active');
                 const fields = activeStage.querySelectorAll('[required]');
 
+                console.log(fields.length);
+                
                 fields.forEach(field => {
                     field.addEventListener('input', () => {
                         updateNextButtonState(stageNumber);
@@ -299,44 +300,20 @@
         <script type="text/javascript">
             document.getElementById('secondary-button').addEventListener('click', function() {
                 const addButton = this;
-                const contactContainer = document.getElementById('contact-container');
-            
-                console.log("hello");
-
-                // Step 1: Fade out the button
                 addButton.classList.add('fade-out');
-            
+                
                 setTimeout(() => {
-                    // Step 2: Remove the button from the DOM after fading out
                     addButton.style.display = 'none';
-            
-                    // Step 3: Create new fields for the second contact
-                    const newContact = document.createElement('div');
-                    newContact.className = 'contact-section fade-in';
-            
-                    newContact.innerHTML = `
-                        <div class="contact-header">Contact 2</div>
-                        <div class="contact-body">
-                            <!-- Example fields for Contact 2 -->
-                            <label for="second-contact-name">Name:</label>
-                            <input type="text" id="second-contact-name" name="second-contact-name" required>
-            
-                            <label for="second-contact-phone">Phone:</label>
-                            <input type="tel" id="second-contact-phone" name="second-contact-phone" required>
-                        </div>
-                    `;
-            
-                    // Step 4: Append the new fields to the contact container
-                    contactContainer.appendChild(newContact);
-            
-                    // Step 5: Trigger fade-in effect
+                    
+                    addContact('contact1', 'afterend', 15, false);
+                    newContact = document.getElementById('contact2');
+                    newContact.classList.add('fade-in');
+                    
                     setTimeout(() => {
                         newContact.classList.add('show');
                     }, 10); // Small delay to allow the element to be in the DOM before applying opacity
             
-                    // Step 6: Adjust the form size smoothly
-                    contactContainer.style.maxHeight = contactContainer.scrollHeight + "px";
-                }, 300); // Match the timeout to the button's fade-out duration
+                }, 100); 
             });
         </script>
     </body>

@@ -1,6 +1,6 @@
 const addPhone = createFieldManager(
-    (id, margin) => `
-        <input class="error" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555 *" maxlength="14" required>
+    (id, margin, isRequired) => `
+        <input class="phone" type="tel" id="phone${id}" name="phone" style="margin-top: ${margin}px" placeholder="(555)-555-5555${isRequired ? ' *' : ''}" maxlength="14"${isRequired ? ' required' : ''}>
         <span id="phone-error${id}" class="error-label">Please enter a valid phone number.</span>
     `, attachPhoneValidationEvents);
 
