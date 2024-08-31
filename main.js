@@ -1,0 +1,1 @@
+const BUTTON_DELAY = 100; // Used to provide visual feeedback of button press
