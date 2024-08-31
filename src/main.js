@@ -1,5 +1,24 @@
 const BUTTON_DELAY = 100; // Used to provide visual feeedback of button press
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    /************************************************************************
+     * IMPORTANT: move this line out of this if statement for the tests to work.
+     * Due to a time crunch, I wasn't able to find a more elagent solution
+     * to allow this to work both in browser and unit tests.
+     ************************************************************************/
+    module.exports = {
+        validateActiveStage,
+        updateNextButtonState,
+        addFieldListeners,
+        showStage,
+        validateDOB,
+        validateDates
+    };
+}
+
+const { validateField } = require('./fieldValidation'); 
+// const { validateField } = require('./fieldValidation');
+
 /*************************************************
  * Form Initialization
  ************************************************/
@@ -19,14 +38,23 @@ function setupContactInputFields() {
  * and setting up contact input fields.
  */
 function initializeForm() {
-    const startStage = 1;   // This is used to skip having to fill out earlier stages.
+    const startStage = 2;   // This is used to skip having to fill out earlier stages.
 
     setupContactInputFields();
     addFieldListeners(startStage);
     showStage(startStage);
+    addEventListeners();
 }
 
-document.addEventListener('DOMContentLoaded', initializeForm);
+/**
+ * Adds event listeners to all created UI elements.
+ */
+function addEventListeners() { 
+    document.getElementById('dob').addEventListener('input', validateDOB);
+    document.getElementById('departure').addEventListener('input', validateDates);
+    document.getElementById('return').addEventListener('input', validateDates);
+    document.getElementById('secondary-button').addEventListener('click', addSecondaryContact)
+}
 
 /*************************************************
  * Stage Switching and Field Validation
@@ -123,8 +151,6 @@ function validateDOB() {
     validateField('dob', 'dob-error', dobValue > minDate, "You must be 18 years old or older.");
 }
 
-document.getElementById('dob').addEventListener('input', validateDOB);
-
 /**
  * Validates the Departure and Return Date fields to ensure the dates are logical.
  */
@@ -132,8 +158,13 @@ function validateDates() {
     const departureField = document.getElementById('departure');
     const returnField = document.getElementById('return');
 
+    const rawInputValue = document.getElementById('departure').value;
+    
+    // Ensure the date is parsed correctly with the local time zone
+    const departureDate = new Date(rawInputValue + 'T00:00:00'); // Set time to midnight local time
     const today = new Date();
-    const departureDate = new Date(departureField.value);
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+    
     const returnDate = new Date(returnField.value);
     const twoWeeksLater = new Date(departureDate);
     const oneYearLater = new Date(departureDate);
@@ -152,9 +183,6 @@ function validateDates() {
     validateField('return', 'return-error', returnDate > oneYearLater, "Return date can't be more than 1 year after the departure date.");
 }
 
-document.getElementById('departure').addEventListener('input', validateDates);
-document.getElementById('return').addEventListener('input', validateDates);
-
 /*************************************************
  * Secondary Contact Button Event
  ************************************************/
@@ -162,12 +190,12 @@ document.getElementById('return').addEventListener('input', validateDates);
 /**
  * Handles the addition of a secondary contact when the relevant button is clicked.
  */
-document.getElementById('secondary-button').addEventListener('click', function() {
-    const addButton = this;
-    addButton.classList.add('fade-out');
+function addSecondaryContact() {
+    const secondaryButton = document.getElementById('secondary-button');
+    secondaryButton.classList.add('fade-out');
 
     setTimeout(() => {
-        addButton.style.display = 'none';
+        secondaryButton.style.display = 'none';
 
         addContact('contact1', 'afterend', 15, false);
         const newContact = document.getElementById('contact2');
@@ -177,4 +205,4 @@ document.getElementById('secondary-button').addEventListener('click', function()
             newContact.classList.add('show');
         }, 10); // Small delay to allow the element to be in the DOM before applying opacity
     }, 100);
-});
+};
