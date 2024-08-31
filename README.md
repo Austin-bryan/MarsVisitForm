@@ -28,6 +28,9 @@ To view the application, open `index.html` in a web browser. All necessary scrip
 
 ## Known Issues
 - Due to time constraints, some parts of the project might not have full test coverage. However, the provided tests should demonstrate the necessary skills.
+- The unit tests may report errors if executed immediately. This is due to an import issue that I encountered. While I was able to resolve the import and have the tests pass successfully, doing so caused conflicts with the browser version of the project. Therefore, I had to prioritize the browser functionality for this submission.
+
+If you adjust the imports to focus on testing, the tests should pass as expected.
 
 ## Future Improvements
 - Expand the unit test coverage to include more edge cases.
