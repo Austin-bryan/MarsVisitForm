@@ -6,6 +6,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
      * Due to a time crunch, I wasn't able to find a more elagent solution
      * to allow this to work both in browser and unit tests.
      ************************************************************************/
+    const { validateField } = require('./fieldValidation'); 
     module.exports = {
         validateActiveStage,
         updateNextButtonState,
@@ -16,7 +17,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     };
 }
 
-const { validateField } = require('./fieldValidation'); 
 // const { validateField } = require('./fieldValidation');
 
 /*************************************************
