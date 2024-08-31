@@ -38,7 +38,7 @@ function setupContactInputFields() {
  * and setting up contact input fields.
  */
 function initializeForm() {
-    const startStage = 2;   // This is used to skip having to fill out earlier stages.
+    const startStage = 1;   // This is used to skip having to fill out earlier stages.
 
     setupContactInputFields();
     addFieldListeners(startStage);
