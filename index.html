@@ -1,0 +1,152 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mars Visit Application</title>
+        
+        <!-- jQuery and jQuery UI CSS -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="app-container outer-panel">
+            <!-- Stage 1: Personal Information -->
+            <div class="form-stage active" id="stage1">
+                <div class="form-header">
+                    <h1>Personal Information</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Personal Information Fields -->
+                    <label id="client-name-label" class="input-label" for="name1">Full Name</label>
+                    <span id="name-error" class="error-label">Please enter a valid name.</span>
+
+                    <label class="input-label" for="dob">Date of Birth *</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <span id="dob-error" class="error-label">Please enter a date of birth.</span>
+
+                    <label class="input-label" for="nationality">Nationality</label>
+                    <div class="input-group">
+                        <select id="nationality" name="nationality" required>
+                            <option value="US">United States</option>
+                            <option value="AU">Australia</option>
+                            <option value="CA">Canada</option>
+                            <option value="CN">China</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
+                            <option value="IN">India</option>
+                            <option value="IT">Italy</option>
+                            <option value="JP">Japan</option>
+                            <option value="MX">Mexico</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="RU">Russia</option>
+                            <option value="KR">South Korea</option>
+                            <option value="ES">Spain</option>
+                            <option value="SE">Sweden</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="UK">Other</option>
+                        </select>
+                    </div>
+
+                    <label id="client-email-label" class="input-label" for="email1">Email *</label>
+                    <label id="client-phone-label" class="input-label" for="phone1">Phone *</label>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button1" class="nav-button" disabled>Back</button>
+                    <button id="next-button1" class="nav-button" onclick="showStage(2)" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Stage 2: Travel Preferences -->
+            <div class="form-stage" id="stage2" style="display: none;">
+                <div class="form-header">
+                    <h1>Travel Preferences</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Travel Preferences Fields -->
+                    <label class="input-label" for="departure">Departure Date *</label>
+                    <input type="date" id="departure" name="departure" required>
+                    <span id="departure-error" class="error-label"">Please enter a depature date.</span>
+
+                    <label class="input-label" for="return">Return Date *</label>
+                    <input type="date" id="return" name="return" required>
+                    <span id="return-error" class="error-label"">Return date must be at least 2 weeks after the depature date.</span>
+
+                    <label class="input-label" for="accommodation">Accommodation Preference</label>
+                    <select id="accommodation" name="accommodation">
+                        <option value="none">No Preference</option>
+                        <option value="dome">Mars Habitat Dome</option>
+                        <option value="base">Martian Base</option>
+                        <option value="igloo">Martian Ice Igloo</option>
+                        <option value="station">Orbital Station Stay</option>
+                        <option value="rover">Rover Cabin Experience</option>
+                        <option value="hotel">Space Hotel</option>
+                    </select>
+
+                    <label class="input-label" for="requests">Special Requests or Preferences</label>
+                    <textarea id="requests" name="requests"></textarea>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button2" class="nav-button" onclick="showStage(1)">Back</button>
+                    <button id="next-button2" class="nav-button" onclick="showStage(3)" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Stage 3: Health and Safety -->
+            <div class="form-stage" id="stage3" style="display: none;">
+                <div class="form-header">
+                    <h1>Health and Safety</h1>
+                </div>
+                <div class="form-body">
+                    <!-- Health and Safety Fields -->
+                    <label class="input-label" for="health">Health Declaration *</label>
+                    <select id="health" name="health" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+
+                    <label id="emergency-label" class="input-label" for="emergency">Emergency Contact Information</label>
+                    <button id="secondary-button" class="secondary-button">Add Secondary Contact</button>
+
+                    <label class="input-label" for="conditions">Any Medical Conditions</label>
+                    <textarea id="conditions" name="conditions"></textarea>
+                </div>
+                <div class="form-footer">
+                    <button id="back-button3" class="nav-button" onclick="showStage(2)">Back</button>
+                    <button id="next-button3" class="nav-button" onclick="showStage(4)" disabled>Submit</button>
+                </div>
+            </div>
+
+            <!-- Stage 4: Submission -->
+            <div class="form-stage" id="stage4" style="display: none;">
+                <div class="form-header">
+                    <h1>Application Submitted</h1>
+                </div>
+                <div class="form-body">
+                    <p>Thank you for submitting your application to visit Mars!</p>
+                    <p>We have received your information and will review it shortly. You will receive a confirmation email with further details.</p>
+                    <p>We look forward to seeing you on your journey to the Red Planet!</p>
+                </div>
+                <div class="form-footer">
+                    <button class="nav-button" onclick="window.location.href='index.html'">Return to Home</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery and jQuery UI Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        
+        <!-- Custom Scripts -->
+        <script src="src/fieldValidation.js"></script>
+        <script src="src/main.js"></script>
+        <script src="src/formFields.js"></script>
+
+        <script type="text/javascript">
+            initializeForm();
+        </script>
+    </body>
+    </html>
